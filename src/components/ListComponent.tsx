@@ -3,6 +3,7 @@ import Card from "./Card";
 import EmptyContent from "./EmptyContent";
 import { Droppable } from "react-beautiful-dnd";
 import { Column, ColumnType } from "../modules/types";
+import React from "react";
 
 interface ListComponentProps {
   column: { name: string; type: ColumnType };
@@ -35,26 +36,21 @@ const cardHeaderText = {
   color: "#414644",
   m: "2",
 };
-function ListComponent({ column, lists }: ListComponentProps) {
-  const columnType = lists?.find((list) => list.columnType === column.type);
-  const cards = columnType?.cards;
+
+const ListComponent = React.memo(({ column: { name, type }, lists }: ListComponentProps) => {
+  const cards = lists?.find((list) => list.columnType === type)?.cards;
   return (
     <Box {...listCardStyle} position={"relative"}>
       <HStack {...cardHeaderStyle} alignItems="center">
-        <Text {...cardHeaderText}>{column.name}</Text>
+        <Text {...cardHeaderText}>{name}</Text>
         <Text {...cardHeaderText}>{cards?.length}</Text>
       </HStack>
-      <Droppable droppableId={column.type} key={column.type}>
+      <Droppable droppableId={type} key={type}>
         {(provided) => (
-          <VStack
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            className="container"
-            p={2}
-          >
-            {cards?.map((card, index) => {
-              return <Card index={index} card={card} key={card.id} />;
-            })}
+          <VStack ref={provided.innerRef} {...provided.droppableProps} className="container" p={2}>
+            {cards?.map((card, index) => (
+              <Card index={index} card={card} key={card.id} />
+            ))}
             {provided.placeholder}
           </VStack>
         )}
@@ -62,5 +58,6 @@ function ListComponent({ column, lists }: ListComponentProps) {
       {!cards?.length && <EmptyContent />}
     </Box>
   );
-}
+});
+
 export default ListComponent;

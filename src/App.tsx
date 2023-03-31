@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import AdminLayuot from "./AdminLayuot";
 import ListComponent from "./components/ListComponent";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";

@@ -1,21 +1,14 @@
 import React from "react";
-import {
-  HStack,
-  IconButton,
-  Menu,
-  MenuButton,
-  Spacer,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { HStack, IconButton, Menu, MenuButton, Spacer, Text, VStack } from "@chakra-ui/react";
 import { FiMoreVertical } from "react-icons/fi";
 
-const cardTitle = {
+const titleStyle = {
   fontWeight: "600",
   fontSize: "14px",
   lineHeight: "16px",
 };
 const subTitleStyle = {
+  ...titleStyle,
   fontWeight: "400",
   fontSize: "12px",
   lineHeight: "14px",
@@ -34,11 +27,13 @@ type CardHeaderProps = {
   subtitle: string;
 };
 
-export default function CardHeader({ title, subtitle }: CardHeaderProps) {
+const CardHeader = ({ title, subtitle }: CardHeaderProps) => {
   return (
     <HStack>
       <VStack alignItems="start">
-        <Text {...cardTitle}>{title}</Text>
+        <Text {...titleStyle} fontWeight="600" fontSize="14px" lineHeight="16px">
+          {title}
+        </Text>
         <Text {...subTitleStyle} isTruncated>
           {subtitle}
         </Text>
@@ -49,4 +44,6 @@ export default function CardHeader({ title, subtitle }: CardHeaderProps) {
       </Menu>
     </HStack>
   );
-}
+};
+
+export default CardHeader;

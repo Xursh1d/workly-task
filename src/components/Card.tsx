@@ -4,6 +4,7 @@ import CardBtn from "./CardBtn";
 import CardFooter from "./CardFooter";
 import { Draggable } from "react-beautiful-dnd";
 import { CardData } from "../modules/types";
+import React from "react";
 
 const cardStye = {
   w: "100%",
@@ -24,35 +25,29 @@ const draggingStyle = {
 
 type CardProps = { index: number; card: CardData };
 
-function Card({ index, card }: CardProps) {
+function Card({ index, card: { id, title, subtitle, status, members, tasks, avatarSrc, fullName, profession } }: CardProps) {
   return (
-    <Draggable index={index} draggableId={card.id.toString()} key={card.id}>
-      {(provided, snapshot) => (
+    <Draggable index={index} draggableId={id.toString()} key={id}>
+      {({ draggableProps, dragHandleProps, innerRef }, { isDragging }) => (
         <VStack
           {...cardStye}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
+          {...draggableProps}
+          {...dragHandleProps}
+          ref={innerRef}
           style={{
-            ...provided.draggableProps.style,
-            ...(snapshot.isDragging && draggingStyle),
+            ...draggableProps.style,
+            ...(isDragging && draggingStyle),
           }}
         >
-          <CardHeader title={card?.title} subtitle={card?.subtitle} />
-          <CardBtn
-            status={card?.status}
-            members={card?.members}
-            tasks={card?.tasks}
-          />
-          <CardFooter
-            avatarSrc={card?.avatarSrc}
-            fullName={card?.fullName}
-            profession={card?.profession}
-          />
+          <CardHeader title={title} subtitle={subtitle} />
+          <CardBtn status={status} members={members} tasks={tasks} />
+          <CardFooter avatarSrc={avatarSrc} fullName={fullName} profession={profession} />
         </VStack>
       )}
     </Draggable>
   );
 }
 
-export default Card;
+const MemoizedCard = React.memo(Card);
+export default MemoizedCard;
+
